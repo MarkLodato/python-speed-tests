@@ -6,4 +6,4 @@ all : c
 c : LDFLAGS = -lm
 
 clean :
-	$(RM) c
+	$(RM) c *.pyc
