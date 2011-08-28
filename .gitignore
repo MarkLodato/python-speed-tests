@@ -1,2 +1,8 @@
+*.o
+*.pyc
 inplace_c
+inplace_cython.c
+inplace_cython
+inplace_loop.c
+inplace_loop
 recursive_c
