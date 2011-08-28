@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import numpy as np
-from comprehension import main
+from common import main
 
 def fft(x):
     N = len(x)
@@ -18,7 +18,7 @@ def fft(x):
     return np.concatenate([l, r])
 
 
-def setup(N, count):
+def setup(N):
     return np.arange(N, dtype='complex'),
 
 

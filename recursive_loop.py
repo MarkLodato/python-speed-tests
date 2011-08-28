@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from cmath import exp, pi
-from comprehension import main
+from common import main
 
 def _fft(N, x, xo, s, y, yo):
     if N <= 1:
@@ -19,9 +19,10 @@ def _fft(N, x, xo, s, y, yo):
 
 def fft(x, y):
     _fft(len(x), x, 0, 1, y, 0)
+    return y
 
 
-def setup(N, count):
+def setup(N):
     return range(N), [None]*N
 
 

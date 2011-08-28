@@ -1,9 +1,11 @@
 CC = gcc
-CFLAGS = -O2 -Wall -Wextra -g
+CFLAGS = -O2 -Wall -Wextra -Werror -g
 
-all : c
+TARGETS = recursive_c inplace_c
 
-c : LDFLAGS = -lm
+all : $(TARGETS)
+
+$(TARGETS) : LDFLAGS = -lm
 
 clean :
-	$(RM) c *.pyc
+	$(RM) $(TARGETS) *.pyc
