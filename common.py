@@ -14,6 +14,8 @@ def printer(x, y):
 
 def main(func, setup=setup, printer=printer):
     p = OptionParser(usage="%prog [-v] log-size [iterations]")
+    p.add_option('-q', '--quiet', action='count', default=0,
+            help="print only value in floating point")
     p.add_option('-v', '--verbose', action='count', default=0,
             help="print the FFT result")
     
@@ -35,4 +37,8 @@ def main(func, setup=setup, printer=printer):
         printer(x, y)
         print
 
-    print "%s seconds per loop" % ((t1-t0)/count)
+    t = (t1-t0)/count
+    if opts.quiet == 0:
+        print "%f seconds per loop" % t
+    else:
+        print "%f" % t

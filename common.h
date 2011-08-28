@@ -26,12 +26,16 @@ main(int argc, char **argv)
     struct timeval tv0, tv1;
     complex double *x, *y;
     int c;
-    int verbose = 0;
+    int verbose = 0, quiet = 0;
+    double t;
 
-    while ((c = getopt(argc, argv, "vh")) != -1) {
+    while ((c = getopt(argc, argv, "vqh")) != -1) {
         switch (c) {
             case 'v':
                 verbose++;
+                break;
+            case 'q':
+                quiet++;
                 break;
             case 'h':
             default:
@@ -78,7 +82,11 @@ main(int argc, char **argv)
         printf("\n");
     }
 
-    printf("%f seconds per loop\n", TIMEDIF(tv0, tv1) / count);
+    t = TIMEDIF(tv0, tv1) / count;
+    if (quiet == 0)
+        printf("%f seconds per loop\n", t);
+    else
+        printf("%f\n", t);
 
     return 0;
 }
