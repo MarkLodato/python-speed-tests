@@ -21,22 +21,22 @@ bitrev_shuffle(size_t N, complex double *x)
 static void
 fft_in_place(size_t N, complex double *x)
 {
-    size_t b, i, j, trans_size, trans;
-    complex double wb, wb_step, temp1, temp2;
+    size_t t, i, j, trans_size, trans;
+    complex double wb, wb_step, a, b;
 
     bitrev_shuffle(N, x);
 
     for (trans_size = 2; trans_size <= N; trans_size *= 2) {
         wb = 1;
         wb_step = cexp(-2j * M_PI / trans_size);
-        for (b = 0; b < trans_size / 2; b++)  {
+        for (t = 0; t < trans_size / 2; t++)  {
             for (trans = 0; trans < N / trans_size; trans++)  {
-                i = trans * trans_size + b;
+                i = trans * trans_size + t;
                 j = i + trans_size / 2;
-                temp1 = x[i];
-                temp2 = x[j] * wb;
-                x[i] = temp1 + temp2;
-                x[j] = temp1 - temp2;
+                a = x[i];
+                b = x[j] * wb;
+                x[i] = a + b;
+                x[j] = a - b;
             }
             wb *= wb_step;
         }
