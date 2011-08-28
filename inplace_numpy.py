@@ -5,15 +5,16 @@ import numpy as np
 
 def bitrev_shuffle(x):
     N = len(x)
-    j = 0
-    for i in xrange(1, N):
-        b = N >> 1
-        while j >= b:
-            j -= b
-            b >>= 1
-        j += b
-        if j > i:
-            x[i], x[j] = x[j], x[i]
+    logN = int(np.log2(N))
+    assert logN <= 32
+    i = np.arange(N, dtype=np.uint32)
+    i = ((i >> 1) & 0x55555555) | ((i & 0x55555555) << 1)
+    i = ((i >> 2) & 0x33333333) | ((i & 0x33333333) << 2)
+    i = ((i >> 4) & 0x0F0F0F0F) | ((i & 0x0F0F0F0F) << 4)
+    i = ((i >> 8) & 0x00FF00FF) | ((i & 0x00FF00FF) << 8)
+    i = ( i >> 16             ) | ( i               << 16)
+    i >>= (32 - logN)
+    x[:] = x[i]
 
 
 def fft_in_place(x):
