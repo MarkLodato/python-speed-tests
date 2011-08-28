@@ -19,20 +19,16 @@ def bitrev_shuffle(x):
 def fft_in_place(x):
     N = len(x)
     bitrev_shuffle(x)
-    idx = np.arange(N)
-    idx.shape = (N, 1)
-    trans_size = 2
-    while trans_size <= N:
-        t = np.arange(trans_size >> 1)
-        wb = np.exp(-2j * np.pi / trans_size * t)
-        i = idx[0::2]
-        j = idx[1::2]
-        a = x[i]
-        b = x[j] * wb
-        x[i] = a + b
-        x[j] = a - b
-        trans_size <<= 1
-        idx.shape = (idx.shape[0] / 2, idx.shape[1] * 2)
+    x.shape = (N, 1)
+    while x.shape[1] < N:
+        t = np.arange(x.shape[1], dtype='complex')
+        wb = np.exp(-1j * np.pi / x.shape[1] * t)
+        a = x[0::2].copy()
+        b = x[1::2] * wb
+        x[0::2] = a + b
+        x[1::2] = a - b
+        x.shape = (x.shape[0] / 2, x.shape[1] * 2)
+    x.shape = (N,)
 
 
 def fft(x):
