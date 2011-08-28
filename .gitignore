@@ -6,3 +6,7 @@ inplace_cython
 inplace_loop.c
 inplace_loop
 recursive_c
+recursive_loop.c
+recursive_loop
+recursive_comprehension.c
+recursive_comprehension

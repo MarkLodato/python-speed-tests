@@ -1,0 +1,46 @@
+#!/usr/bin/python
+
+import sys
+from subprocess import Popen, PIPE
+
+if not 2 <= len(sys.argv) <= 3:
+    print >>sys.stderr, "USAGE: %s log-size [iterations]" % sys.argv[0]
+    sys.exit(1)
+
+tests = [
+        ('In-Place FFT', {
+            'c' : ['./inplace_c'],
+            'cython+numpy' : ['./inplace_cython'],
+            'cythonrun' : ['./inplace_loop'],
+            'python' : ['python', 'inplace_loop.py'],
+            'pypy' : ['pypy', 'inplace_loop.py'],
+            'numpy' : ['python', 'inplace_numpy.py'],
+            }),
+        ('Recursive FFT', {
+            'c' : ['./recursive_c'],
+            'python-comprehension' : ['python', 'recursive_comprehension.py'],
+            'pypy-comprehension' : ['pypy', 'recursive_comprehension.py'],
+            'cythonrun-comprehension' : ['./recursive_comprehension'],
+            'python-loop' : ['python', 'recursive_loop.py'],
+            'pypy-loop' : ['pypy', 'recursive_loop.py'],
+            'cythonrun-loop' : ['./recursive_loop'],
+            'numpy' : ['./recursive_numpy.py'],
+            }),
+        ]
+
+def run(program):
+    return Popen(program, stdout=PIPE).communicate()[0]
+
+first = True
+for testname, programs in tests:
+    if first:
+        first = False
+    else:
+        print
+    print testname
+    print '-' * len(testname)
+    times = [(float(run(program+['-q']+sys.argv[1:])), name)
+            for name, program in programs.iteritems()]
+    times.sort()
+    for time, name in times:
+        print '%.4f  %s' % (time, name)
